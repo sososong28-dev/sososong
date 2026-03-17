@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>OpenClaw Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>OpenClaw 多节点统一监控与调度控制台</h1>
+    <a href="/tasks">任务页</a>
+  </header>
+  <section>
+    <label>状态筛选:</label>
+    <select id="statusFilter">
+      <option value="all">全部</option>
+      <option value="online">正常</option>
+      <option value="offline">离线</option>
+      <option value="error">异常</option>
+    </select>
+    <button id="refreshBtn">手动刷新</button>
+    <span id="lastRefresh"></span>
+  </section>
+  <main id="nodeList" class="cards"></main>
+  <script>window.REFRESH_SECONDS = {{ refresh_seconds }};</script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

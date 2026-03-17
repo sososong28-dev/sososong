@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>Node Detail</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <a href="/">返回首页</a>
+  </header>
+  <h2 id="title"></h2>
+  <button id="checkBtn">手动健康检查</button>
+  <pre id="machine"></pre>
+  <h3>日志摘要</h3>
+  <ul id="logs"></ul>
+  <h3>最近任务</h3>
+  <ul id="tasks"></ul>
+  <script>window.NODE_ID = "{{ node_id }}";</script>
+  <script src="/static/node.js"></script>
+</body>
+</html>
