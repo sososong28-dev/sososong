@@ -1,0 +1,23 @@
+[
+  {
+    "id": "openclaw",
+    "displayName": "OpenClaw",
+    "homeURL": "https://openclaw.example.com",
+    "inputSelector": "textarea",
+    "submitSelector": "button[type='submit']"
+  },
+  {
+    "id": "codex",
+    "displayName": "Codex",
+    "homeURL": "https://chatgpt.com/codex",
+    "inputSelector": "textarea",
+    "submitSelector": "button[type='submit']"
+  },
+  {
+    "id": "gpt",
+    "displayName": "GPT",
+    "homeURL": "https://chatgpt.com",
+    "inputSelector": "textarea",
+    "submitSelector": "button[type='submit']"
+  }
+]
