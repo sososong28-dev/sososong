@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -56,4 +57,4 @@ class NodeDetail(NodeBase):
 
 
 class ActionRequest(BaseModel):
-    action: str
+    action: Literal["health_check", "fetch_logs", "check_process"]

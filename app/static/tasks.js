@@ -1,5 +1,11 @@
+function getAuthHeaders() {
+  return { 'X-API-Token': localStorage.getItem('apiToken') || '' };
+}
+
 async function loadTasks() {
-  const tasks = await (await fetch('/api/tasks')).json();
+  const response = await fetch('/api/tasks', { headers: getAuthHeaders() });
+  if (!response.ok) throw new Error(`请求失败: ${response.status}`);
+  const tasks = await response.json();
   const rows = document.getElementById('taskRows');
   rows.innerHTML = '';
   tasks.forEach(t => {
@@ -8,4 +14,5 @@ async function loadTasks() {
     rows.appendChild(tr);
   });
 }
+
 loadTasks();

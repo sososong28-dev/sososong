@@ -1,5 +1,11 @@
+function getAuthHeaders() {
+  const token = localStorage.getItem('apiToken') || '';
+  return { 'X-API-Token': token };
+}
+
 async function fetchNodes() {
-  const res = await fetch('/api/nodes');
+  const res = await fetch('/api/nodes', { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error(`请求失败: ${res.status}`);
   return res.json();
 }
 
@@ -7,7 +13,7 @@ function render(nodes) {
   const filter = document.getElementById('statusFilter').value;
   const list = document.getElementById('nodeList');
   list.innerHTML = '';
-  nodes.filter(n => filter === 'all' ? true : n.status === filter).forEach(node => {
+  nodes.filter(n => (filter === 'all' ? true : n.status === filter)).forEach(node => {
     const div = document.createElement('div');
     div.className = `card status-${node.status}`;
     div.dataset.testid = 'node-card';
@@ -26,11 +32,22 @@ function render(nodes) {
 }
 
 async function load() {
-  const nodes = await fetchNodes();
-  render(nodes);
+  try {
+    const nodes = await fetchNodes();
+    render(nodes);
+    document.getElementById('error').textContent = '';
+  } catch (err) {
+    document.getElementById('error').textContent = String(err.message || err);
+  }
 }
 
 document.getElementById('refreshBtn').addEventListener('click', load);
 document.getElementById('statusFilter').addEventListener('change', load);
+document.getElementById('saveTokenBtn').addEventListener('click', () => {
+  localStorage.setItem('apiToken', document.getElementById('tokenInput').value.trim());
+  load();
+});
+
+document.getElementById('tokenInput').value = localStorage.getItem('apiToken') || '';
 load();
 setInterval(load, (window.REFRESH_SECONDS || 15) * 1000);

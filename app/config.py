@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -30,7 +30,13 @@ class Settings(BaseSettings):
     refresh_seconds: int = 15
     probe_interval_seconds: int = 60
     ssh_timeout_seconds: int = 10
+    api_token: str = "change-me"
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+
+    @field_validator("nodes_config_path")
+    @classmethod
+    def normalize_nodes_config_path(cls, value: str) -> str:
+        return str(Path(value).expanduser().resolve())
 
 
 class NodeFile(BaseModel):

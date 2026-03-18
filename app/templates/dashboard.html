@@ -11,6 +11,11 @@
     <a href="/tasks">任务页</a>
   </header>
   <section>
+    <label>API Token:</label>
+    <input id="tokenInput" type="password" placeholder="输入 X-API-Token" />
+    <button id="saveTokenBtn">保存 Token</button>
+  </section>
+  <section>
     <label>状态筛选:</label>
     <select id="statusFilter">
       <option value="all">全部</option>
@@ -20,6 +25,7 @@
     </select>
     <button id="refreshBtn">手动刷新</button>
     <span id="lastRefresh"></span>
+    <div id="error" class="error"></div>
   </section>
   <main id="nodeList" class="cards"></main>
   <script>window.REFRESH_SECONDS = {{ refresh_seconds }};</script>

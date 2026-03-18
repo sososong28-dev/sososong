@@ -8,3 +8,4 @@ header { display:flex; gap:12px; align-items:center; margin-bottom:16px; }
 pre { background:white; padding:12px; border-radius:8px; }
 table { width:100%; background:white; border-collapse: collapse; }
 th, td { border:1px solid #ddd; padding:8px; }
+.error { color:#d0342c; margin-top:8px; }

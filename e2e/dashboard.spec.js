@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test('dashboard and navigation', async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem('apiToken', 'change-me'));
   await page.goto('/');
   await expect(page).toHaveTitle(/Dashboard/);
   const cards = page.locator('[data-testid="node-card"]');

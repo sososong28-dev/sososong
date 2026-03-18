@@ -17,6 +17,13 @@
   - Mac 本机使用 `psutil` + 本地进程检查
   - Windows 节点使用 SSH + PowerShell 采集信息
 
+## 安全增强（本次修复）
+- API Token 鉴权：除 `/api/health` 外 API 需携带 `X-API-Token`
+- Action 参数白名单与 Pydantic 强校验
+- `node_id` 路径参数正则校验，禁止非法格式
+- 全局节点配置状态移除，改为按配置文件读取
+- 统一日志记录 + 未处理异常兜底返回
+
 ## 项目结构
 
 ```bash
@@ -48,7 +55,10 @@ e2e/
 ```bash
 cp .env.example .env
 ```
-2. 编辑 `config/nodes.yaml`：设置 Win 节点 SSH 主机、用户、进程名、日志路径。
+2. 编辑 `.env`：
+   - `API_TOKEN`：API 访问令牌
+   - `NODES_CONFIG_PATH`：建议绝对路径
+3. 编辑 `config/nodes.yaml`：设置 Win 节点 SSH 主机、用户、进程名、日志路径。
 
 ## 启动
 ```bash
@@ -79,11 +89,10 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-## 安全说明
-- action API 仅允许白名单动作（`health_check/fetch_logs/check_process`）
-- 不支持前端透传任意 shell 命令
-- SSH 配置通过配置文件读取
-- 敏感参数应放在 `.env`
+## API 鉴权示例
+```bash
+curl -H "X-API-Token: change-me" http://127.0.0.1:8000/api/nodes
+```
 
 ## 已知限制
 - Windows SSH 登录默认依赖已有密钥/认证配置（未强制实现密码登录）

@@ -37,6 +37,7 @@ nodes:
     )
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
     monkeypatch.setenv("NODES_CONFIG_PATH", str(nodes_path))
+    monkeypatch.setenv("API_TOKEN", "test-token")
 
     from app.config import get_settings
 

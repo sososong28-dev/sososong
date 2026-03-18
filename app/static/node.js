@@ -1,5 +1,10 @@
+function getAuthHeaders() {
+  return { 'X-API-Token': localStorage.getItem('apiToken') || '' };
+}
+
 async function loadNode() {
-  const res = await fetch(`/api/nodes/${window.NODE_ID}`);
+  const res = await fetch(`/api/nodes/${window.NODE_ID}`, { headers: getAuthHeaders() });
+  if (!res.ok) throw new Error(`请求失败: ${res.status}`);
   const node = await res.json();
   document.getElementById('title').textContent = `${node.name} 详情`;
   document.getElementById('machine').textContent = JSON.stringify({
@@ -33,7 +38,7 @@ async function loadNode() {
 }
 
 document.getElementById('checkBtn').addEventListener('click', async () => {
-  await fetch(`/api/nodes/${window.NODE_ID}/check`, { method: 'POST' });
+  await fetch(`/api/nodes/${window.NODE_ID}/check`, { method: 'POST', headers: getAuthHeaders() });
   await loadNode();
 });
 

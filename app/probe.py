@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+import logging
+from datetime import datetime, timezone
 
 import paramiko
 import psutil
@@ -11,14 +12,19 @@ from app.config import NodeConfig, get_settings
 from app.models import Node, NodeLog, TaskRecord
 
 ALLOWED_ACTIONS = {"health_check", "fetch_logs", "check_process"}
+logger = logging.getLogger("openclaw.console.probe")
+
+
+class ProbeError(RuntimeError):
+    pass
 
 
 def summarize_logs(path: str | None) -> str:
     if not path:
         return "no log path configured"
     try:
-        with open(path, "r", encoding="utf-8", errors="ignore") as f:
-            lines = f.readlines()[-5:]
+        with open(path, "r", encoding="utf-8", errors="ignore") as file:
+            lines = file.readlines()[-5:]
         return "".join(lines).strip() or "log file empty"
     except OSError as exc:
         return f"log unavailable: {exc}"
@@ -28,8 +34,8 @@ def _run_ssh_probe(node: NodeConfig) -> dict:
     settings = get_settings()
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    script = rf'''
-$cpu = (Get-Counter "\Processor(_Total)\% Processor Time").CounterSamples.CookedValue
+    script = rf"""
+$cpu = (Get-Counter "\\Processor(_Total)\\% Processor Time").CounterSamples.CookedValue
 $os = Get-CimInstance Win32_OperatingSystem
 $disk = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'"
 $proc = Get-Process -Name "{node.openclaw_process_name}" -ErrorAction SilentlyContinue
@@ -42,7 +48,7 @@ process_exists=([bool]$proc)
 checked_at=(Get-Date).ToString("o")
 }}
 $result | ConvertTo-Json -Compress
-'''
+""".strip()
     try:
         client.connect(
             hostname=node.host,
@@ -50,12 +56,16 @@ $result | ConvertTo-Json -Compress
             username=node.ssh_user,
             timeout=settings.ssh_timeout_seconds,
         )
-        _, stdout, stderr = client.exec_command(f"powershell -NoProfile -Command \"{script}\"")
+        _, stdout, stderr = client.exec_command(f'powershell -NoProfile -Command "{script}"')
         out = stdout.read().decode("utf-8", errors="ignore").strip()
         err = stderr.read().decode("utf-8", errors="ignore").strip()
         if err:
-            raise RuntimeError(err)
+            raise ProbeError(err)
+        if not out:
+            raise ProbeError("empty response from remote node")
         return json.loads(out)
+    except Exception as exc:
+        raise ProbeError(f"ssh probe failed: {exc}") from exc
     finally:
         client.close()
 
@@ -71,12 +81,12 @@ def _run_local_probe(node: NodeConfig) -> dict:
         "memory": round(mem, 2),
         "disk": round(disk, 2),
         "process_exists": proc_exists,
-        "checked_at": datetime.utcnow().isoformat(),
+        "checked_at": datetime.now(timezone.utc).isoformat(),
     }
 
 
 def run_probe(db: Session, node: Node, cfg: NodeConfig) -> Node:
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     task = TaskRecord(node_id=node.id, task_type="health_check", status="running", started_at=now)
     db.add(task)
     db.flush()
@@ -98,6 +108,7 @@ def run_probe(db: Session, node: Node, cfg: NodeConfig) -> Node:
         task.status = "success"
         task.result = json.dumps(data)
     except Exception as exc:
+        logger.warning("probe failed for node=%s reason=%s", node.id, exc)
         node.status = "offline"
         node.ssh_status = "error" if cfg.os_type == "windows" else "local"
         node.openclaw_status = "error"
@@ -107,7 +118,7 @@ def run_probe(db: Session, node: Node, cfg: NodeConfig) -> Node:
         db.add(NodeLog(node_id=node.id, level="ERROR", message=str(exc)[:1000]))
         task.status = "failed"
         task.error_message = str(exc)
-    task.ended_at = datetime.utcnow()
+    task.ended_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(node)
     return node
