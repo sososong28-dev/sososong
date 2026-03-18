@@ -2,32 +2,44 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>OpenClaw Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw Dashboard - 节点监控</title>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
   <header>
-    <h1>OpenClaw 多节点统一监控与调度控制台</h1>
-    <a href="/tasks">任务页</a>
+    <h1>🥟 OpenClaw 监控控制台</h1>
+    <a href="/tasks">📋 任务页</a>
   </header>
-  <section>
-    <label>API Token:</label>
-    <input id="tokenInput" type="password" placeholder="输入 X-API-Token" />
-    <button id="saveTokenBtn">保存 Token</button>
-  </section>
-  <section>
-    <label>状态筛选:</label>
+  
+  <div class="controls">
+    <label>🔑 Token:</label>
+    <input id="tokenInput" type="password" placeholder="输入 API Token" style="width:200px;" />
+    <button id="saveTokenBtn">💾 保存</button>
+    
+    <label style="margin-left:20px;">🔍 筛选:</label>
     <select id="statusFilter">
-      <option value="all">全部</option>
-      <option value="online">正常</option>
-      <option value="offline">离线</option>
-      <option value="error">异常</option>
+      <option value="all">全部状态</option>
+      <option value="online">🟢 在线</option>
+      <option value="offline">🔴 离线</option>
+      <option value="error">🟠 异常</option>
     </select>
-    <button id="refreshBtn">手动刷新</button>
+    
+    <button id="refreshBtn">🔄 刷新</button>
+    <button id="exportBtn" class="export-btn">📥 导出数据</button>
     <span id="lastRefresh"></span>
-    <div id="error" class="error"></div>
-  </section>
+  </div>
+  
+  <div id="error"></div>
   <main id="nodeList" class="cards"></main>
+  
+  <!-- 节点详情弹窗 -->
+  <div id="nodeModal" class="modal">
+    <div class="modal-content">
+      <div id="modalContent"></div>
+    </div>
+  </div>
+  
   <script>window.REFRESH_SECONDS = {{ refresh_seconds }};</script>
   <script src="/static/app.js"></script>
 </body>

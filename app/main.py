@@ -3,7 +3,9 @@ from __future__ import annotations
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-from typing import Annotated
+from typing import List
+
+from typing_extensions import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Path, Request, status
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -112,7 +114,7 @@ def health():
     return {"status": "ok", "time": datetime.now(timezone.utc).isoformat()}
 
 
-@app.get("/api/nodes", response_model=list[NodeBase], dependencies=[Depends(require_api_token)])
+@app.get("/api/nodes", response_model=List[NodeBase], dependencies=[Depends(require_api_token)])
 def list_nodes(db: Session = Depends(get_db)):
     nodes = db.scalars(select(Node).order_by(Node.name)).all()
     return nodes
@@ -128,7 +130,7 @@ def node_detail(node_id: NodeId, db: Session = Depends(get_db)):
     return node
 
 
-@app.get("/api/tasks", response_model=list[TaskRecordOut], dependencies=[Depends(require_api_token)])
+@app.get("/api/tasks", response_model=List[TaskRecordOut], dependencies=[Depends(require_api_token)])
 def list_tasks(db: Session = Depends(get_db)):
     tasks = db.scalars(select(TaskRecord).order_by(TaskRecord.started_at.desc()).limit(100)).all()
     return tasks
@@ -160,3 +162,17 @@ def node_action(node_id: NodeId, payload: ActionRequest, db: Session = Depends(g
     except Exception as exc:
         logger.exception("action failed for node=%s action=%s", node_id, payload.action)
         raise HTTPException(status_code=500, detail=f"action failed: {exc}") from exc
+
+
+@app.post("/api/nodes/{node_id}/run-command", dependencies=[Depends(require_api_token)])
+def run_node_command(node_id: NodeId, db: Session = Depends(get_db)):
+    """执行节点的健康检查命令"""
+    node = db.get(Node, node_id)
+    cfg = get_node_cfg(node_id)
+    if not node or not cfg:
+        raise HTTPException(status_code=404, detail="node not found")
+    try:
+        return execute_action(db, node, cfg, "run_command")
+    except Exception as exc:
+        logger.exception("command execution failed for node=%s", node_id)
+        raise HTTPException(status_code=500, detail=f"command failed: {exc}") from exc

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal
+from typing import List, Optional, Literal
 
 from pydantic import BaseModel
 
@@ -14,15 +14,15 @@ class NodeBase(BaseModel):
     ssh_status: str
     openclaw_status: str
     process_exists: str
-    last_heartbeat_at: datetime | None
-    last_success_at: datetime | None
-    last_probe_at: datetime | None
-    last_failure_at: datetime | None
-    last_error: str | None
-    cpu_usage: float | None
-    memory_usage: float | None
-    disk_usage: float | None
-    listening_state: str | None
+    last_heartbeat_at: Optional[datetime]
+    last_success_at: Optional[datetime]
+    last_probe_at: Optional[datetime]
+    last_failure_at: Optional[datetime]
+    last_error: Optional[str]
+    cpu_usage: Optional[float]
+    memory_usage: Optional[float]
+    disk_usage: Optional[float]
+    listening_state: Optional[str]
 
     class Config:
         from_attributes = True
@@ -43,18 +43,26 @@ class TaskRecordOut(BaseModel):
     task_type: str
     status: str
     started_at: datetime
-    ended_at: datetime | None
-    error_message: str | None
-    result: str | None
+    ended_at: Optional[datetime]
+    error_message: Optional[str]
+    result: Optional[str]
 
     class Config:
         from_attributes = True
 
 
 class NodeDetail(NodeBase):
-    logs: list[NodeLogOut]
-    tasks: list[TaskRecordOut]
+    logs: List[NodeLogOut]
+    tasks: List[TaskRecordOut]
 
 
 class ActionRequest(BaseModel):
-    action: Literal["health_check", "fetch_logs", "check_process"]
+    action: Literal["health_check", "fetch_logs", "check_process", "run_command"]
+
+
+class CommandResult(BaseModel):
+    command: str
+    exit_code: int
+    stdout: str
+    stderr: str
+    success: bool

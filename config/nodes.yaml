@@ -1,28 +1,51 @@
 nodes:
   - id: mac-openclaw-master
-    name: mac-openclaw-master
+    name: Mac OpenClaw 主机
     os_type: mac
     host: localhost
     ip: 127.0.0.1
-    openclaw_process_name: openclaw
-    log_path: /tmp/openclaw.log
+    openclaw_process_name: openclaw-gateway
+    log_path: /Users/sososong/.openclaw/logs/openclaw.log
+    openclaw_port: 18789
+    health_commands:
+      - "openclaw gateway status"
+      - "openclaw status --all"
+    task_commands:
+      - "openclaw sessions list 2>&1 | head -30"
+      - "openclaw status --all 2>&1 | head -50"
 
-  - id: win-openclaw-01
-    name: win-openclaw-01
+  - id: win1-msi
+    name: win1 (MSI)
     os_type: windows
-    host: 192.168.1.101
-    ip: 192.168.1.101
+    host: 192.168.0.161
+    ip: 192.168.0.161
     ssh_port: 22
-    ssh_user: administrator
-    openclaw_process_name: openclaw
+    ssh_user: User
+    ssh_password: "111111"
+    openclaw_process_name: openclaw-gateway
     log_path: C:/OpenClaw/logs/openclaw.log
+    openclaw_port: 18789
+    health_commands:
+      - "openclaw gateway status"
+      - "openclaw status --all"
+    task_commands:
+      - "openclaw sessions list 2>&1 | head -30"
+      - "openclaw status --all 2>&1 | head -50"
 
-  - id: win-openclaw-02
-    name: win-openclaw-02
+  - id: win2-kin
+    name: win2 (KIN)
     os_type: windows
-    host: 192.168.1.102
-    ip: 192.168.1.102
+    host: 192.168.0.110
+    ip: 192.168.0.110
     ssh_port: 22
-    ssh_user: administrator
-    openclaw_process_name: openclaw
+    ssh_user: ho
+    ssh_password: "111111"
+    openclaw_process_name: openclaw-gateway
     log_path: C:/OpenClaw/logs/openclaw.log
+    openclaw_port: 18789
+    health_commands:
+      - "openclaw gateway status"
+      - "openclaw status --all"
+    task_commands:
+      - "openclaw sessions list 2>&1 | head -30"
+      - "openclaw status --all 2>&1 | head -50"

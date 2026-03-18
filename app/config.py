@@ -17,8 +17,10 @@ class NodeConfig(BaseModel):
     ip: str
     ssh_port: int = 22
     ssh_user: str | None = None
+    ssh_password: str | None = None
     openclaw_process_name: str = "openclaw"
     log_path: str | None = None
+    health_commands: list[str] = []
 
 
 class Settings(BaseSettings):
