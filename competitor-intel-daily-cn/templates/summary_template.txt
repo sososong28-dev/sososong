@@ -1,0 +1,22 @@
+【{{report_title}} | {{report_date}}】
+
+一、今日重点
+1. {{headline_1}}
+2. {{headline_2}}
+3. {{headline_3}}
+4. {{headline_4}}
+
+二、电商观察
+- 重点价格带：{{price_band_summary}}
+- 重点卖点：{{selling_points_summary}}
+- 差评高频点：{{complaint_summary}}
+
+三、建议
+1. {{advice_1}}
+2. {{advice_2}}
+3. {{advice_3}}
+
+四、备注
+- 监控覆盖：{{coverage_summary}}
+- 官方动态：{{official_status_summary}}
+- 异常/失败：{{exception_summary}}

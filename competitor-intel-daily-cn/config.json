@@ -1,0 +1,25 @@
+{
+  "report_title": "避孕套行业竞品情报日报",
+  "timezone": "Asia/Shanghai",
+  "language": "zh-CN",
+  "lookback_hours": 24,
+  "fallback_days": 7,
+  "max_items_per_source": 30,
+  "max_comment_samples_per_product": 20,
+  "title_one_liner_required": true,
+  "dedupe_similarity_threshold": 0.85,
+  "output_format": ["markdown", "pdf", "summary"],
+  "output_directory": "./output/reports",
+  "raw_directory": "./output/raw",
+  "cleaned_directory": "./output/cleaned",
+  "send_channels": ["telegram"],
+  "alert_triggers": [
+    "国家抽检",
+    "处罚",
+    "召回",
+    "竞品大幅降价",
+    "新品上线",
+    "评论异常增长",
+    "平台传播爆点"
+  ]
+}
