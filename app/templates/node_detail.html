@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Node Detail</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="aurora-body">
+  <div class="detail-shell">
+    <header class="detail-header glass-panel">
+      <a class="ghost-link" href="/">← 返回首页</a>
+      <button id="checkBtn" class="primary-btn">手动健康检查</button>
+    </header>
+
+    <section class="hero-panel glass-panel compact-hero">
+      <div>
+        <div class="hero-tag">Node Workspace</div>
+        <h1 id="title">节点详情</h1>
+        <p>查看单个节点的机器健康、OpenClaw 状态、最近任务与 token 用量。</p>
+      </div>
+    </section>
+
+    <div class="detail-grid">
+      <section class="glass-panel">
+        <div class="section-title">机器与实例状态</div>
+        <pre id="machine"></pre>
+      </section>
+
+      <section class="glass-panel">
+        <div class="section-title">日志摘要</div>
+        <pre id="logSummary"></pre>
+        <ul id="logs" class="list-stack"></ul>
+      </section>
+    </div>
+
+    <div class="detail-grid lower-grid">
+      <section class="glass-panel">
+        <div class="section-title">最近 Token 用量</div>
+        <table>
+          <thead><tr><th>Provider</th><th>Model</th><th>Prompt</th><th>Completion</th><th>Total</th><th>时间</th></tr></thead>
+          <tbody id="tokenRows"></tbody>
+        </table>
+      </section>
+
+      <section class="glass-panel">
+        <div class="section-title">最近任务</div>
+        <ul id="tasks" class="list-stack"></ul>
+      </section>
+    </div>
+  </div>
+  <script>window.NODE_ID = "{{ node_id }}";</script>
+  <script src="/static/node.js"></script>
+</body>
+</html>

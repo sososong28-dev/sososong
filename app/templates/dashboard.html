@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpenClaw Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="aurora-body">
+  <div class="app-shell">
+    <aside class="sidebar glass-panel">
+      <div>
+        <div class="brand-title">Control Center</div>
+        <div class="brand-subtitle">本地多节点 Agent 控制中心</div>
+      </div>
+
+      <div class="token-panel">
+        <label class="field-label" for="tokenInput">授权 Token</label>
+        <input id="tokenInput" class="soft-input" type="password" placeholder="输入 X-API-Token" />
+        <button id="saveTokenBtn" class="primary-btn wide">保存 Token</button>
+      </div>
+
+      <nav class="side-nav">
+        <a class="nav-item active" href="#">节点管理</a>
+        <a class="nav-item" href="/tasks">任务记录</a>
+        <a class="nav-item" href="#summaryCards">系统状态</a>
+        <a class="nav-item" href="#nodeList">数据概览</a>
+      </nav>
+
+      <div class="side-note">
+        <div class="tiny-label">当前模式</div>
+        <div class="side-note-value">OpenClaw 多节点巡检</div>
+      </div>
+    </aside>
+
+    <main class="content-column">
+      <section class="hero-panel glass-panel">
+        <div>
+          <div class="hero-tag">OpenClaw Multi-Node Workspace</div>
+          <h1>统一监控与调度控制台</h1>
+          <p>集中管理 Mac 主控与 Win1 / Win2 节点，实时查看状态、日志、任务和 AI Token 用量。</p>
+        </div>
+        <div class="hero-actions">
+          <button id="refreshBtn" class="ghost-btn">手动刷新</button>
+          <button id="checkAllBtn" class="primary-btn">全量巡检</button>
+        </div>
+      </section>
+
+      <section id="summaryCards" class="summary-grid"></section>
+
+      <section class="toolbar-panel glass-panel">
+        <div>
+          <div class="section-title">节点名册</div>
+          <div class="section-subtitle">支持按状态筛选，快速定位 Win1 / Win2 和本机主控节点。</div>
+        </div>
+        <div class="toolbar-controls">
+          <select id="statusFilter" class="soft-input soft-select">
+            <option value="all">全部状态</option>
+            <option value="online">正常</option>
+            <option value="offline">离线</option>
+            <option value="error">异常</option>
+          </select>
+          <div id="lastRefresh" class="muted-text"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">团队节点</div>
+        <div class="section-subtitle">点击卡片查看节点详情、日志摘要与最近 token 记录。</div>
+      </section>
+      <main id="nodeList" class="cards agent-grid"></main>
+      <div id="error" class="error"></div>
+    </main>
+
+    <aside class="right-rail glass-panel">
+      <div>
+        <div class="section-title">用量与队列</div>
+        <div class="progress-group">
+          <div class="progress-row"><span>在线率</span><strong id="onlineRate">0%</strong></div>
+          <div class="progress-bar"><div id="onlineRateBar" class="progress-fill"></div></div>
+        </div>
+        <div class="progress-group">
+          <div class="progress-row"><span>Token 总量</span><strong id="totalTokensLabel">0</strong></div>
+          <div class="progress-bar"><div id="tokenRateBar" class="progress-fill secondary"></div></div>
+        </div>
+      </div>
+
+      <div class="rail-card">
+        <div class="tiny-label">节点状态</div>
+        <div id="railNodeStatus" class="rail-metrics"></div>
+      </div>
+
+      <div class="rail-card">
+        <div class="tiny-label">运行摘要</div>
+        <div id="railInsights" class="rail-list"></div>
+      </div>
+
+      <div class="rail-card">
+        <div class="tiny-label">最近说明</div>
+        <div class="muted-text">支持后台自动巡检、全量手动巡检、节点详情与 token 用量追踪。</div>
+      </div>
+    </aside>
+  </div>
+
+  <script>window.REFRESH_SECONDS = {{ refresh_seconds }};</script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
