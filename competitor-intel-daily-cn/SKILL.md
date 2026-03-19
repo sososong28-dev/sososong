@@ -23,6 +23,7 @@ description: Generate a daily competitor-intelligence report for the condom and 
 |---|---|
 | 搭建日报 skill | 复制本目录并按 `config.json` / `keywords.json` / `sources.json` 调整 |
 | 每天跑一次情报采集 | 先抓近 24 小时，信息不足时回溯近 7 天 |
+| 本地试跑逻辑 | 运行 `python scripts/generate_report.py --input examples/sample_items.json --date 2026-03-19 --skip-pdf` |
 | 输出管理层日报 | 使用 `templates/report_template.md` 渲染 Markdown，再转 PDF |
 | 输出消息版摘要 | 使用 `templates/summary_template.txt` 生成 300-500 字摘要 |
 | 在 Windows 定时执行 | 参考 `references/windows-task-scheduler.md` 或 `scripts/register_daily_task.ps1` |
@@ -281,9 +282,12 @@ competitor-intel-daily-cn/
     report_template.md
     summary_template.txt
   scripts/
+    generate_report.py
     register_daily_task.ps1
   references/
     windows-task-scheduler.md
+  examples/
+    sample_items.json
 ```
 
 ## 使用步骤
@@ -291,10 +295,11 @@ competitor-intel-daily-cn/
 1. 根据业务范围修改 `keywords.json`。
 2. 根据可访问源修改 `sources.json`。
 3. 在 `config.json` 中设定回溯窗口、样本上限、输出目录和发送渠道。
-4. 按 `templates/report_template.md` 生成日报 Markdown。
-5. 按 `templates/summary_template.txt` 生成消息版摘要。
-6. 在 Windows 中按 `references/windows-task-scheduler.md` 注册定时任务。
-7. 如需抓动态页面或复杂站点，联用浏览器自动化 skill。
+4. 先用 `python scripts/generate_report.py --input examples/sample_items.json --date 2026-03-19 --skip-pdf` 做本地样例试跑。
+5. 再按真实采集结果输入 `scripts/generate_report.py`，生成日报 Markdown、摘要和清洗结果。
+6. 按 `templates/report_template.md` / `templates/summary_template.txt` 做版式或文案微调。
+7. 在 Windows 中按 `references/windows-task-scheduler.md` 注册定时任务。
+8. 如需抓动态页面或复杂站点，联用浏览器自动化 skill。
 
 ## 交付要求
 

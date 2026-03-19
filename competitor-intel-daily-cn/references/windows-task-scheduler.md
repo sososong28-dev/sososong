@@ -38,11 +38,10 @@ openclaw run --skill competitor-intel-daily-cn --input "生成今日避孕套行
 如果你的 OpenClaw 分发方式不同，也可以改成：
 
 ```powershell
-python collect.py
-python analyze.py
-python render_pdf.py
-python send_digest.py
+python scripts\\generate_report.py --input examples\\sample_items.json --date 2026-03-19 --skip-pdf
 ```
+
+对于真实环境，建议把抓取器产出的 JSON 作为 `--input` 输入给 `scripts\\generate_report.py`，由它负责去重、摘要、模板渲染和落盘。
 
 ## 在任务计划程序中创建任务
 
