@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="aurora-body">
+  <div class="detail-shell">
+    <header class="detail-header glass-panel">
+      <a class="ghost-link" href="/">← 返回首页</a>
+      <div class="hero-tag">Task & Token Timeline</div>
+    </header>
+
+    <section class="hero-panel glass-panel compact-hero">
+      <div>
+        <div class="hero-tag">Operations Timeline</div>
+        <h1>最近任务与 AI Token 用量</h1>
+        <p>统一查看各节点的任务执行历史与模型 token 消耗记录。</p>
+      </div>
+    </section>
+
+    <section class="glass-panel table-panel">
+      <div class="section-title">最近任务执行记录</div>
+      <table>
+        <thead><tr><th>节点</th><th>任务类型</th><th>开始时间</th><th>结束时间</th><th>结果</th><th>错误</th></tr></thead>
+        <tbody id="taskRows"></tbody>
+      </table>
+    </section>
+
+    <section class="glass-panel table-panel">
+      <div class="section-title">最近 AI Token 用量</div>
+      <table>
+        <thead><tr><th>节点</th><th>Provider</th><th>Model</th><th>Prompt</th><th>Completion</th><th>Total</th><th>时间</th></tr></thead>
+        <tbody id="usageRows"></tbody>
+      </table>
+    </section>
+  </div>
+  <script src="/static/tasks.js"></script>
+</body>
+</html>

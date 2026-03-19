@@ -1,0 +1,28 @@
+nodes:
+  - id: mac-openclaw-master
+    name: mac-openclaw-master
+    os_type: mac
+    host: localhost
+    ip: 127.0.0.1
+    openclaw_process_name: openclaw
+    log_path: /tmp/openclaw.log
+
+  - id: win-openclaw-01
+    name: win-openclaw-01
+    os_type: windows
+    host: 192.168.1.101
+    ip: 192.168.1.101
+    ssh_port: 22
+    ssh_user: administrator
+    openclaw_process_name: openclaw
+    log_path: C:/OpenClaw/logs/openclaw.log
+
+  - id: win-openclaw-02
+    name: win-openclaw-02
+    os_type: windows
+    host: 192.168.1.102
+    ip: 192.168.1.102
+    ssh_port: 22
+    ssh_user: administrator
+    openclaw_process_name: openclaw
+    log_path: C:/OpenClaw/logs/openclaw.log
