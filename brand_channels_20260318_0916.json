@@ -1,0 +1,62 @@
+{
+  "crawl_time": "2026-03-18 09:16",
+  "brands": {
+    "杜蕾斯": {
+      "官网": "https://www.durex.com.cn",
+      "京东": "https://mall.jd.com/index-1000003652.html",
+      "天猫": "https://durex.tmall.com"
+    },
+    "杰士邦": {
+      "官网": "https://www.jissbon.com",
+      "京东": "https://mall.jd.com/index-1000002736.html",
+      "天猫": "https://jissbon.tmall.com"
+    },
+    "冈本": {
+      "官网": "https://www.okamoto.com.cn",
+      "京东": "https://mall.jd.com/index-1000003439.html",
+      "天猫": "https://okamoto.tmall.com"
+    }
+  },
+  "results": {
+    "杜蕾斯": {
+      "官网": {
+        "title": "杜蕾斯-全球知名避孕套/安全套品牌-杜蕾斯官网",
+        "products": []
+      },
+      "京东": {
+        "title": "您所访问的页面不存在",
+        "products": []
+      },
+      "天猫": {
+        "title": "首页-durex杜蕾斯官方旗舰店-天猫Tmall.com",
+        "products": []
+      }
+    },
+    "杰士邦": {
+      "官网": {
+        "error": "Page.goto: net::ERR_CONNECTION_CLOSED at https://www.jissbon.com/\nCall log:\n  - navigating to \"https://www.jissbon.com/\", waiting until \"domcontentloaded\"\n"
+      },
+      "京东": {
+        "title": "您所访问的页面不存在",
+        "products": []
+      },
+      "天猫": {
+        "title": "首页-jissbon杰士邦官方旗舰店-天猫Tmall.com",
+        "products": []
+      }
+    },
+    "冈本": {
+      "官网": {
+        "error": "Page.goto: net::ERR_CONNECTION_CLOSED at https://www.okamoto.com.cn/\nCall log:\n  - navigating to \"https://www.okamoto.com.cn/\", waiting until \"domcontentloaded\"\n"
+      },
+      "京东": {
+        "title": "您所访问的页面不存在",
+        "products": []
+      },
+      "天猫": {
+        "title": "验证码拦截",
+        "products": []
+      }
+    }
+  }
+}
